@@ -140,60 +140,56 @@ def generate_iv(block_size=56):
     return get_random_bytes(block_size)
 
 
-def encrypt_aes128(plaintext, encryption_key):
-    """Implementation of AES256. Key size of 126 bits with
-    a block size of 126. PKCS7 padding. Encrypts using AES128
-    to a file. Additionally, an HMAC is generated to verify
-    data integrity.
+def encrypt_aes(plaintext,
+                encryption_key=generate_master_key
+                ("sha256", b'>>$$MasterPassword9000$$<<'),
+                algorithm="aes128"):
+    """Implementation of AES Encryption. Encrypts either AES128
+    or AES256. By default, will generate a key and use aes128.
+    PKCS7 padding.
 
     Args:
-        plaintext (byte)
+        plaintext (byte):
             The plain text to be encrypted.
-        encryption_key (byte)
+        encryption_key (byte):
             The key used to encrypt the data.
+        algorithm (string):
+
 
     Return: None.
     """
     # Initial set up of encryption cipher.
-    algorithm = "aes128"
-    key_size = 16  # 128 bit key.
+    local_hash = ""
+    try:
+        if algorithm == "aes128":
+            key_size = 16
+            local_hash = "sha256"
+        elif algorithm == "aes256":
+            key_size = 32
+            local_hash = "sha512"
+        else:
+            raise TypeError
+    except TypeError:
+        print(str(TypeError) + " Invalid key length")
     block_size = 16
-    encryption_key = generate_encryption_key('sha256', encryption_key)
-    print(encryption_key)
-    print("HERE")
+    encryption_key = generate_encryption_key(local_hash, encryption_key)
     iv = generate_iv(block_size)
     plaintext = Crypto.Util.Padding.pad(plaintext, block_size, style='pkcs7')
     cipher = AES.new(encryption_key, AES.MODE_CBC, iv)
 
-    # Encryption of data and generation of HMAC.
+    # Encryption of data.
     ciphertext = cipher.encrypt(plaintext)
-    #local_hmac = generate_hmac(hmac_derived_key, ciphertext + iv)
-
-
-    # DEFINE HMAC_DERIVED_KEY or seperate functionality
-
-
-
 
     # Write encrypted data to file.
     try:
-        f = open("encrypted.txt", "wb")
-        f.write(hexlify(ciphertext))
-        f.close()
+        with open("encrypted.txt", "wb") as f:
+            f.write(hexlify(ciphertext))
     except FileNotFoundError:
         print("Can not find file!")
-
-    # User feedback.
-    print("NOW ENCRYPTING:" + algorithm)
-#    print("\nHMAC:\n" + local_hmac)
-    print("\nEncrypted:")
-    print(ciphertext)
-    del ciphertext
 
     # Generate and serialize cipher metadata.
     local_keys = dict(int_list=[],
                       my_keys=encryption_key,
-                      #my_hmac=hmac_derived_key,
                       my_iv=iv,
                       my_block_size=block_size,
                       my_algorithm=algorithm,
@@ -201,81 +197,7 @@ def encrypt_aes128(plaintext, encryption_key):
 
     with open('keys.pkl', 'wb') as f:
         pickle.dump(local_keys, f)
-    f.close()
-
-    # Generate HMAC file.
-    try:
-        f = open("hmac.txt", "w")
-#        f.write(local_hmac)
-        f.close()
-    except FileNotFoundError:
-        print("Can not find file!")
-
-
-def encrypt_aes256(plaintext):
-    """Implementation of AES256. Key size of 256 bits with
-    a block size of 126. PKCS7 padding. Encrypts using AES256
-    to a file. Additionally, an HMAC is generated to verify
-    data integrity.
-
-    Args:
-        plaintext (byte)
-            The plain text to be encrypted.
-
-    Return: None.
-    """
-    # Implementation of AES128.
-    # Block size of 16 with PKCS7 padding.
-    # Encrypts and message using AES128 to a file,
-    # and reads it back to decrypt the data.
-
-    # Initial set up of encryption cipher.
-    algorithm = "aes256"
-    key_size = 32  # 256 bit key.
-    block_size = 16
-    encryption_key = generate_encryption_key(key_size)
-    iv = generate_iv(block_size)
-    plaintext = Crypto.Util.Padding.pad(plaintext, block_size, style='pkcs7')
-    cipher = AES.new(encryption_key, AES.MODE_CBC, iv)
-
-    # Encryption of data and generation of HMAC.
-    ciphertext = cipher.encrypt(plaintext)
-    local_hmac = generate_hmac(hmac_derived_key, ciphertext+iv)
-
-    # Write encrypted data to file.
-    try:
-        f = open("encrypted.txt", "wb")
-        f.write(hexlify(ciphertext))
-        f.close()
-    except FileNotFoundError:
-        print("Can not find file!")
-
-    # User feedback.
-    print("NOW ENCRYPTING:" + algorithm)
-    print("\nHMAC:\n" + local_hmac)
-    print("\nEncrypted:")
-    print(ciphertext)
-    del ciphertext
-
-    # Generate and serialize cipher metadata.
-    local_keys = dict(int_list=[],
-                      my_keys=encryption_key,
-                      my_hmac=hmac_derived_key,
-                      my_iv=iv,
-                      my_block_size=block_size,
-                      my_algorithm=algorithm,
-                      my_key_size=key_size)
-
-    with open('keys.pkl', 'wb') as f:
-        pickle.dump(local_keys, f)
-
-    # Generate HMAC file.
-    try:
-        f = open("hmac.txt", "w")
-        f.write(local_hmac)
-        f.close()
-    except FileNotFoundError:
-        print("Can not find file!")
+    return ciphertext
 
 
 def encrypt_3des(plaintext):
@@ -295,31 +217,21 @@ def encrypt_3des(plaintext):
     key_size = 16
     block_size = 16
     iv = generate_iv(8)
-    encryption_key = generate_encryption_key(block_size)
-    print(plaintext.decode())
+    encryption_key = generate_encryption_key('sha256', generate_master_key
+                                             ("sha256", b'>>$$MasterPassword9000$$<<'))
     plaintext = Crypto.Util.Padding.pad(plaintext, block_size, style='pkcs7')
     cipher = triple_des(encryption_key, CBC, iv, pad=None)
 
     # Encryption of data and generation of HMAC.
     ciphertext = cipher.encrypt(plaintext)
-    local_hmac = generate_hmac(hmac_derived_key, ciphertext+iv)
 
     # Write encrypted data to file.
-    f = open("encrypted.txt", "wb")
-    f.write(hexlify(ciphertext))
-    f.close()
-
-    # User feedback.
-    print("NOW ENCRYPTING WITH " + algorithm.upper() + ":")
-    print("\nHMAC:\n" + local_hmac)
-    print("\nEncrypted:")
-    print(ciphertext)
-    del ciphertext
+    with open("encrypted.txt", "wb") as f:
+        f.write(hexlify(ciphertext))
 
     # Generate and serialize cipher metadata.
     local_keys = dict(int_list=[],
                       my_keys=encryption_key,
-                      my_hmac=hmac_derived_key,
                       my_iv=iv,
                       my_block_size=block_size,
                       my_algorithm=algorithm,
@@ -327,20 +239,12 @@ def encrypt_3des(plaintext):
 
     with open('keys.pkl', 'wb') as f:
         pickle.dump(local_keys, f)
-    f.close()
-
-    # Generate HMAC file.
-    try:
-        f = open("hmac.txt", "w")
-        f.write(local_hmac)
-        f.close()
-    except FileNotFoundError:
-        print("Can not find file!")
+    return ciphertext
 
 
-def decrypt():
-    """Decrypts from a text file cipher text that has been generated
-    using algorithms 3DES, AES128, or AES256. Reads metadata from
+def decrypt(ciphertext=""):
+    """Decrypts from input or a text file cipher text that has been
+    generated using algorithms 3DES, AES128, or AES256. Reads metadata from
     keys.pkl. Will detect algorithm used and send plaintext to
     "plaintext.txt".
 
@@ -350,7 +254,6 @@ def decrypt():
     """
     # Initialize variables
     algorithm = "Unknown Algorithm"
-    local_recovered_hmac_key = ""
     encryption_key = ""
     iv = ""
     block_size = ""
@@ -360,7 +263,6 @@ def decrypt():
         with open('keys.pkl', 'rb') as f:
             enc_meta = pickle.load(f)
         encryption_key = enc_meta['my_keys']
-#        local_recovered_hmac_key = enc_meta['my_hmac']
         iv = enc_meta['my_iv']
         block_size = enc_meta['my_block_size']
         algorithm = enc_meta['my_algorithm']
@@ -373,39 +275,12 @@ def decrypt():
         sys.exit(0)
 
     # Opening file and reading ciphertext.
-    print("NOW DECRYPTING WITH " + algorithm.upper() + ":")
-    ciphertext = "Failed to load."
-    try:
-        f = open("encrypted.txt", "br")
-        ciphertext = f.read()
-        f.close()
-    except FileNotFoundError:
-        print("Can not find file!")
-
-    # Generating HMAC
-#    local_hmac = generate_hmac(local_recovered_hmac_key, unhexlify(ciphertext)+iv)
-    print("\nGenerated HMAC:")
-#    print(local_hmac)
-
-    # Reading HMAC generated at encryption time.
-    test_hmac = "Failed to load."
-    try:
-        f = open("hmac.txt", "r")
-    #    test_hmac = f.read()
-        f.close()
-
-    except FileNotFoundError:
-        print("Can not find file!")
-
-    print("\nRegistered HMAC:")
-    print(test_hmac)
-
-    # Ensure match
-  #  if test_hmac != local_hmac:
-  #      print("\nCORRUPTED DATA: Alterations have been made!")
-  #      sys.exit(0)
- #   else:
- #       print("\nMATCH")
+    if ciphertext == "":
+        try:
+            with open("encrypted.txt", "br") as f:
+                ciphertext = f.read()
+        except FileNotFoundError:
+            print("Can not find file!")
 
     # Choose decryption algorithm.
     if algorithm == "aes128" or algorithm == "aes256":
@@ -414,13 +289,9 @@ def decrypt():
         decipher = triple_des(encryption_key, CBC, iv, pad=None)
 
     # Decrypt and decode.
-    plaintext = decipher.decrypt(unhexlify(ciphertext))
-    plaintext = Crypto.Util.Padding.unpad(plaintext, block_size, style='pkcs7')
-    print("\nDecrypted:")
     try:
-        f = open("plaintext.txt", "w")
-        f.write(plaintext.decode())
-        f.close()
-    except FileNotFoundError:
-        print("Can not find file!")
-    print(plaintext.decode())
+        plaintext = decipher.decrypt(unhexlify(ciphertext))
+        plaintext = Crypto.Util.Padding.unpad(plaintext, block_size, style='pkcs7')
+        return plaintext.decode()
+    except:
+        print("Incorrect String Format")

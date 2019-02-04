@@ -55,7 +55,7 @@ class MyTestCase(unittest.TestCase):
         # derived keys for sha512
         key_length = 32
         master_key = pyCryptoFrost.generate_master_key('sha512')
-        key512 = pyCryptoFrost.generate_encryption_key('sha256', master_key)
+        key512 = pyCryptoFrost.generate_encryption_key('sha512', master_key)
         print("\nDerived encryption key sha512:")
         print(hexlify(key512).decode())
         self.assertEqual(key_length, len(key512))
@@ -111,24 +111,52 @@ class MyTestCase(unittest.TestCase):
         self.assertNotEqual(iv32, pyCryptoFrost.generate_iv(32))
         self.assertNotEqual(iv56, pyCryptoFrost.generate_iv(56))
 
-    def test_encrypt_aes128(self):
-        r = b'**ENCRYPT ME**'
+    def test_encrypt_aes(self):
+        r = b'**ENCRYPT ME AES**'
 
+        # Tests AES256
         master_key = pyCryptoFrost.generate_master_key('sha256')
-        key256 = pyCryptoFrost.generate_hmac_key(16, master_key)
-        pyCryptoFrost.encrypt_aes128(r, key256)
+        key256 = pyCryptoFrost.generate_encryption_key('sha256', master_key)
+        pyCryptoFrost.encrypt_aes(r, key256, "aes128")
+        self.assertEqual(len(key256), 16)
 
-    def test_encrypt_aes256(self):
-        print("stub")
+        # Tests AES512
+        master_key = pyCryptoFrost.generate_master_key('sha512')
+        key512 = pyCryptoFrost.generate_encryption_key('sha512', master_key)
+        pyCryptoFrost.encrypt_aes(r, key512, "aes256")
+        self.assertEqual(len(key512), 32)
+
+        # Tests default encryption with dynamic assignments
+        print(pyCryptoFrost.encrypt_aes(r))
+
+        pyCryptoFrost.decrypt()
+        pyCryptoFrost.decrypt("ff08c21b4c7045a64defca6136244fbf")
+        pyCryptoFrost.decrypt("cdf042cefb0cffeda749da3c2a4bc137RRR")
 
     def test_encrypt_3des(self):
-        print("stub")
+        r = b'**ENCRYPT ME 3DES**'
+
+        pyCryptoFrost.encrypt_3des(r)
+        pyCryptoFrost.decrypt()
+        pyCryptoFrost.decrypt("ff08c21b4c7045a64defca6136244fbf")
+        pyCryptoFrost.decrypt("cdf042cefb0cffeda749da3c2a4bc137RRR")
+        test = pyCryptoFrost.decrypt()
+        print(pyCryptoFrost.decrypt())
+
+        self.assertGreater(len(test), 0)
 
     def test_generate_hmac(self):
-        print("stub")
+        r = b'**HMAC TEST**'
 
-    def test_decrypt(self):
-        pyCryptoFrost.decrypt()
+        master_key = pyCryptoFrost.generate_master_key('sha512')
+        hmac_key = pyCryptoFrost.generate_hmac_key(16, master_key)
+        print("hmac key:")
+        print(hmac_key)
+        print()
+        test = pyCryptoFrost.generate_hmac(hmac_key, r)
+
+        self.assertGreater(len(test), 0)
+        self.assertGreater(len(hmac_key), 0)
 
 
 if __name__ == '__main__':
