@@ -162,10 +162,8 @@ def encrypt_aes(plaintext,
     local_hash = ""
     try:
         if algorithm == "aes128":
-            key_size = 16
             local_hash = "sha256"
         elif algorithm == "aes256":
-            key_size = 32
             local_hash = "sha512"
         else:
             raise TypeError
@@ -186,14 +184,12 @@ def encrypt_aes(plaintext,
             f.write(hexlify(ciphertext))
     except FileNotFoundError:
         print("Can not find file!")
-
     # Generate and serialize cipher metadata.
     local_keys = dict(int_list=[],
                       my_keys=encryption_key,
                       my_iv=iv,
                       my_block_size=block_size,
-                      my_algorithm=algorithm,
-                      my_key_size=key_size)
+                      my_algorithm=algorithm)
 
     with open('keys.pkl', 'wb') as f:
         pickle.dump(local_keys, f)

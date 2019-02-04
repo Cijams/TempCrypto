@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2223bcc2-a649-4a7a-8b12-7920ed99919b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/hmac.txt" beforeDir="false" afterPath="$PROJECT_DIR$/hmac.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/encrypted.txt" beforeDir="false" afterPath="$PROJECT_DIR$/encrypted.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keys.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/keys.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyCryptoFrost.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyCryptoFrost.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -58,14 +60,14 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="me" value="40" />
-          <entry key="py" value="1207" />
+          <entry key="py" value="1215" />
           <entry key="txt" value="70" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="110" />
-          <entry key="Python" value="1207" />
+          <entry key="Python" value="1215" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -89,7 +91,7 @@
     <favorites_list name="AES256-AES128-3DES-Python3.7" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.3560658">
+    <splitter split-orientation="horizontal" split-proportion="0.5442834">
       <split-first>
         <splitter split-orientation="horizontal" split-proportion="0.13613231">
           <split-first>
@@ -110,8 +112,8 @@
               <file pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/crypto_unit_testing.py">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="944">
-                      <caret line="163" selection-start-line="163" selection-end-line="163" />
+                    <state relative-caret-position="593">
+                      <caret line="164" lean-forward="true" selection-start-line="164" selection-end-line="164" />
                       <folding>
                         <element signature="e#0#15#0" expanded="true" />
                       </folding>
@@ -166,8 +168,8 @@
               <file pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/pyCryptoFrost.py">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="1083">
-                      <caret line="91" selection-start-line="91" selection-end-line="91" />
+                    <state relative-caret-position="783">
+                      <caret line="187" column="34" lean-forward="true" selection-start-line="187" selection-start-column="34" selection-end-line="187" selection-end-column="34" />
                       <folding>
                         <element signature="e#0#14#0" expanded="true" />
                       </folding>
@@ -282,10 +284,10 @@
         <option value="$PROJECT_DIR$/pyFileCrypto.py" />
         <option value="$PROJECT_DIR$/cryptomanager.py" />
         <option value="$PROJECT_DIR$/plaintext.txt" />
-        <option value="$PROJECT_DIR$/pyCryptoFrost.py" />
         <option value="$PROJECT_DIR$/crypto_unit_testing.py" />
         <option value="$PROJECT_DIR$/encryption/Read.me" />
         <option value="$PROJECT_DIR$/hmac.txt" />
+        <option value="$PROJECT_DIR$/pyCryptoFrost.py" />
       </list>
     </option>
   </component>
@@ -496,12 +498,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_for_crypto_unit_testing_MyTestCase_test_generate_hmac - 2019.02.03 at 21h 27m 52s.xml">
-      <configuration name="Unittests for crypto_unit_testing.MyTestCase.test_generate_hmac" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_for_crypto_unit_testing_MyTestCase_test_generate_hmac - 2019.02.03 at 21h 28m 02s.xml">
-      <configuration name="Unittests for crypto_unit_testing.MyTestCase.test_generate_hmac" configurationId="tests" />
-    </history-entry>
     <history-entry file="Unittests_for_crypto_unit_testing_MyTestCase_test_generate_hmac - 2019.02.03 at 21h 28m 18s.xml">
       <configuration name="Unittests for crypto_unit_testing.MyTestCase.test_generate_hmac" configurationId="tests" />
     </history-entry>
@@ -526,17 +522,23 @@
     <history-entry file="Unittests_in_crypto_unit_testing_py - 2019.02.03 at 21h 40m 19s.xml">
       <configuration name="Unittests in crypto_unit_testing.py" configurationId="tests" />
     </history-entry>
+    <history-entry file="Unittests_in_crypto_unit_testing_py - 2019.02.03 at 22h 01m 35s.xml">
+      <configuration name="Unittests in crypto_unit_testing.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_crypto_unit_testing_py - 2019.02.03 at 22h 02m 40s.xml">
+      <configuration name="Unittests in crypto_unit_testing.py" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="53" y="96" width="3339" height="1315" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.059375945" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.059375945" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32526475" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.33022863" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.33022863" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -646,16 +648,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/crypto_unit_testing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="944">
-          <caret line="163" selection-start-line="163" selection-end-line="163" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/unittest/case.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="20450">
@@ -691,16 +683,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pyCryptoFrost.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1083">
-          <caret line="144" column="57" selection-start-line="143" selection-start-column="16" selection-end-line="144" selection-end-column="57" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/encryption/Read.me">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -715,6 +697,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="23" lean-forward="true" selection-start-column="23" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyCryptoFrost.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="783">
+          <caret line="187" column="34" lean-forward="true" selection-start-line="187" selection-start-column="34" selection-end-line="187" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crypto_unit_testing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="593">
+          <caret line="164" lean-forward="true" selection-start-line="164" selection-end-line="164" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
