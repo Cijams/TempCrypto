@@ -8,3 +8,5 @@ HMAC generation to test if alterations to the cipher text have been made.
 Key generation via cryptographically proven randomness.
 
 IV generation via cryptographically proven randomness.
+
+https://www.toxsec.com
